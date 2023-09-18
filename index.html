@@ -1,91 +1,88 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script type="text/javascript">
-        var clevertap = {event:[], profile:[], account:[], onUserLogin:[], notifications:[], privacy:[]};
-        // replace with the CLEVERTAP_ACCOUNT_ID with the actual ACCOUNT ID value from your Dashboard -> Settings page
-        clevertap.account.push({"id": "6K7-8W7-496Z"});
-        clevertap.privacy.push({optOut: false}); //set the flag to true, if the user of the device opts out of sharing their data
-        clevertap.privacy.push({useIP: false}); //set the flag to true, if the user agrees to share their IP data
-            (function () {
-                    var wzrk = document.createElement('script');
-                    wzrk.type = 'text/javascript';
-                    wzrk.async = true;
-                    wzrk.src = ('https:' == document.location.protocol ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com') + '/js/clevertap.min.js';        
-                    var s = document.getElementsByTagName('script')[0];
-                    s.parentNode.insertBefore(wzrk, s);
-            })();
-   </script>
-  </head>
-  <body onload="clevertap.notificationCallback">
-    <div class="container-fluid">
-        <!-- Content here -->
-        <button id="demo" type="button" class="btn btn-primary">Push Product Viewed</button>
-    </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script>
-        document.getElementById("demo").onclick = function() {myFunction()}; // event click button
-        let customNotificationPayload = {
-            msgId: "1694944661_20231017" // required
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clevertap Web Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!-- load clever tap SDK -->
+  <script type="text/javascript">
+    var clevertap = { event: [], profile: [], account: [], onUserLogin: [], notifications: [], privacy: [] };
+    // replace with the CLEVERTAP_ACCOUNT_ID with the actual ACCOUNT ID value from your Dashboard -> Settings page
+    clevertap.account.push({ "id": "6K7-8W7-496Z" });
+    clevertap.privacy.push({ optOut: false }); //set the flag to true, if the user of the device opts out of sharing their data
+    clevertap.privacy.push({ useIP: false }); //set the flag to true, if the user agrees to share their IP data
+    (function () {
+      var wzrk = document.createElement('script');
+      wzrk.type = 'text/javascript';
+      wzrk.async = true;
+      wzrk.src = ('https:' == document.location.protocol ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com') + '/js/clevertap.min.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(wzrk, s);
+    })();
+  </script>
+  <!-- end load clever tap SDK -->
+</head>
+
+<body onload="clevertap.notificationCallback">
+  <div class="container-fluid">
+    <!-- Content here -->
+    <button id="demo" type="button" class="btn btn-primary">Push Product Viewed</button>
+  </div>
+  
+  <script>
+    document.getElementById("demo").onclick = function () { myFunction() }; // event click button
+
+    function myFunction() {
+      // Push Event for Product_Viewed
+      clevertap.event.push("Product viewed", {
+        "Product ID": "1",
+        "Product Image": "https://d35fo82fjcw0y8.cloudfront.net/2018/07/26020307/customer-success-clevertap.jpg",
+        "Product Name": "CleverTap"
+      });
+      // End Push Event for Product_Viewed
+
+      // Push Email ID to Profile
+      clevertap.onUserLogin.push({
+        "Site": {
+          "Name": "Jose Steiner",            // String
+          "Identity": 61026032,              // String or number
+          "Email": "clevertap+steinerjose@gmail.com",         // Email address of the user
+          "Phone": "+628112345643",           // Phone (with the country code)
+          "Gender": "M",                     // Can be either M or F
+          "DOB": new Date(),                 // Date of Birth. Date objections        
         }
+      });
+      // End Push Email ID to Profile
 
-        clevertap.notificationCallback = function(msg){
-            //raise the notification viewed and clicked events in the callback
-            clevertap.renderNotificationViewed(customNotificationPayload);
-            console.log(JSON.stringify(msg));            //your custom rendering implementation here
-            var $button = jQuery("<button></button>");   //element on whose click you want to raise the notification clicked event
-            $button.click(function(){
-                clevertap.renderNotificationClicked(customNotificationPayload);
-            });
-        };
-        
-        function myFunction() {
-            var notificationObj = {
-                "msgContent": {
-                    "html": "<Your HTML goes here/>",
-                    "type": 1,
-                    "templateType": "interstitial",  //templateType can also be box/interstitial
-                    "title": "Title goes here",
-                    "description": "Description goes here",
-                },
-                "msgId": "1694944661_20231017" //1630318544_20211004
-            };
+      var notificationObj = {
+        "msgContent": {
+          "html": "<Your HTML goes here/>",
+          "type": 1,
+          "templateType": "interstitial",  //templateType can also be box/interstitial
+          "title": "Title goes here",
+          "description": "Description goes here",
+        },
+        "msgId": "1694944661_20231017" //1630318544_20211004
+      };
 
-            window.parent.clevertap.raiseNotificationClicked(notificationObj);
+      let customNotificationPayload = {
+        msgId: "1694944661_20231017" // required
+      }
 
-            console.log("Product Viewed");
-            clevertap.event.push("Product viewed", {
-                "Product ID": "1",
-                "Product Image": "https://d35fo82fjcw0y8.cloudfront.net/2018/07/26020307/customer-success-clevertap.jpg",
-                "Product Name": "CleverTap"
-            });
+      clevertap.notificationCallback = function (msg) {
+        //raise the notification viewed and clicked events in the callback
+        clevertap.renderNotificationViewed(customNotificationPayload);
+        console.log(JSON.stringify(msg));            //your custom rendering implementation here
+        var $button = jQuery("<button></button>");   //element on whose click you want to raise the notification clicked event
+        $button.click(function () {
+          clevertap.renderNotificationClicked(customNotificationPayload);
+        });
+      };
+    }
+  </script>
+</body>
 
-            // each of the below mentioned fields are optional
-            // with the exception of one of Identity, Email, or FBID
-            clevertap.onUserLogin.push({
-                "Site": {
-                    "Name": "Jose Steiner",            // String
-                    "Identity": 61026032,              // String or number
-                    "Email": "clevertap+steinerjose@gmail.com",         // Email address of the user
-                    "Phone": "+628112345643",           // Phone (with the country code)
-                    "Gender": "M",                     // Can be either M or F
-                    "DOB": new Date(),                 // Date of Birth. Date object
-
-                    // optional fields. controls whether the user will be sent email, push etc.
-                    "MSG-email": false,                // Disable email notifications
-                    "MSG-push": true,                  // Enable push notifications
-                    "MSG-sms": false,                   // Enable sms notifications
-                    "MSG-whatsapp": false,              // Enable WhatsApp notifications        
-                }
-            });
-
-            clevertap.notificationCallback;
-        }
-    </script>  
-    </body>
 </html>
